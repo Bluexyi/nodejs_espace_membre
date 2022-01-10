@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-const authorize = require('_middleware/authorize')
+const authorize = require('_middleware/authorize');
+const itsme = require('_middleware/its-me');
 const userService = require('../services/UserService');
 
 // routes
@@ -11,8 +12,8 @@ router.post('/register', registerSchema, register);
 router.get('/', authorize(), getAll);
 router.get('/current', authorize(), getCurrent);
 router.get('/:id', authorize(), getById);
-router.put('/:id', authorize(), updateSchema, update); //TODO : vérifier s'il s'agit bien de nous
-router.delete('/:id', authorize(), _delete);
+router.put('/:id', authorize(), itsme(), updateSchema, update); //TODO : vérifier s'il s'agit bien de nous
+router.delete('/:id', authorize(), itsme(), _delete);
 
 module.exports = router;
 
