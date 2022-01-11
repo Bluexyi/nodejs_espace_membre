@@ -5,12 +5,10 @@ const errorHandler = require('_middleware/error-handler');
 
 const express = require('express');
 var app = express();
-app = module.exports.app = express();
 
 var http = require('http');
-var server = http.createServer(app);
-var io = require('socket.io')(server);  //pass a http.Server instance
-server.listen(3001);  //listen on port 8080
+var server = require('http').Server(app)
+var io = require('socket.io')(server); 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -170,15 +168,5 @@ io.on('connection', function (socket) {
 // global error handler
 app.use(errorHandler);
 
-/*
-http.listen(3000, function () {
-    console.log('Server is listening on *:3000');
-});
-
-// start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
-app.listen(port, () => console.log('Server listening on port ' + port));
-*/
-
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 3000) : 3000;
-app.listen(port, () => console.log('Server listening on port ' + port));
+server.listen(port, () => console.log('Server listening on port ' + port));
