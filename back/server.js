@@ -14,9 +14,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use('/', express.static(__dirname + '/public'));
+app.use('/chat', express.static(__dirname + '/public'));
+
 // api routes
 app.use('/users', require('./controllers/UserController'));
-app.use('/', express.static(__dirname + '/public'));
+app.use('/chat', require('./controllers/ChatController'));
+
 
 
 var i;
