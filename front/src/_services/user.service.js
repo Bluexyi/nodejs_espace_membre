@@ -3,8 +3,9 @@ import { authHeader } from '../_helpers';
 
 export const userService = {
     login,
-    logout,
-    getAll
+    getCurrent,
+    getCurrent2,
+    logout
 };
 
 function login(username, password) {
@@ -14,33 +15,33 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+    return fetch(`${config.apiUrl}/chat/authenticate`, requestOptions)
         .then(handleResponse)
-        .then(user => {
-            // login successful if there's a user in the response
-            if (user) {
-                // store user details and basic auth credentials in local storage 
-                // to keep user logged in between page refreshes
-                user.authdata = window.btoa(username + ':' + password);
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-
-            return user;
-        });
+        .then(res => {
+            localStorage.setItem('token', res.token);
+            return true;
+        },error => {
+            this.error = error;
+            this.loading = false;
+        }
+    );
 }
 
-function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('user');
-}
-
-function getAll() {
+function getCurrent() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
+    return fetch(`${config.apiUrl}/chat/current`, requestOptions).then(handleResponse);
+}
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+async function getCurrent2() {
+   return true;
+}
+
+
+function logout() {
+    localStorage.removeItem('token');
 }
 
 function handleResponse(response) {
@@ -56,7 +57,6 @@ function handleResponse(response) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-
         return data;
     });
 }

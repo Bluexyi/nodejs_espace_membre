@@ -1,9 +1,9 @@
 export function authHeader() {
     // return authorization header with basic auth credentials
-    let user = JSON.parse(localStorage.getItem('user'));
+    let token = localStorage.getItem('token');
 
-    if (user && user.authdata) {
-        return { 'Authorization': 'Basic ' + user.authdata };
+    if (token) {
+        return { 'Authorization': 'Bearer ' + token };
     } else {
         return {};
     }

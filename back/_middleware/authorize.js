@@ -13,7 +13,6 @@ function authorize() {
             }
             if (token) {
                 jwt.verify(token, secret, async (err, decoded) => {
-                    console.log("DEBUG ", decoded.sub);
                     if (err) {
                         console.log("Token not valid : ", err.message);
                         return res.status(401).json('token_not_valid');

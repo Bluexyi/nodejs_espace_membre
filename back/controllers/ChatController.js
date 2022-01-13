@@ -8,7 +8,7 @@ const userService = require('../services/UserService');
 
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
-router.get('/tt', chat);
+router.get('/current', authorize(), getCurrent);
 
 module.exports = router;
 
@@ -24,8 +24,8 @@ function authenticate(req, res, next) {
     userService.authenticate(req.body)
         .then(user => {
             if (user) {
-                res.redirect('/chat/tt');
-                //res.status(200).sendFile('public/chat.html', { root: '__dirname/../' });
+                //res.setHeader('authorization', "Bearer " + user.token);
+                res.status(200).json({'token': user.token}); 
             } else {
                 res.status(401).send("Unauthorized !");
             }
@@ -36,7 +36,6 @@ function authenticate(req, res, next) {
         });
 }
 
-function chat(req, res, next) {
-    return res.sendFile('/public/chat.html', { root: __dirname + '/..' });
-    next;
+function getCurrent(req, res, next) {
+    res.json(req.user);
 }
