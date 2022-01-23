@@ -26,6 +26,7 @@ export default {
   created() {},
 
   beforeCreate() {
+    /*
     let userFound = null;
     this.userFound = userService.getCurrent().then((res) => {
       console.log("RES ", res);
@@ -35,7 +36,7 @@ export default {
         localStorage.removeItem("token");
         router.push("/login");
       }
-    });
+    });*/
   },
 };
 </script>

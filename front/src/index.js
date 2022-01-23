@@ -3,9 +3,8 @@ import Vue from 'vue';
 import { router } from './_helpers';
 import App from './app/App';
 
-// setup fake backend
-import { configureFakeBackend } from './_helpers';
-configureFakeBackend();
+import 'core-js/stable'; 
+import 'regenerator-runtime/runtime';
 
 new Vue({
     el: '#app',

@@ -4,11 +4,10 @@ import { authHeader } from '../_helpers';
 export const userService = {
     login,
     getCurrent,
-    getCurrent2,
     logout
 };
 
-function login(username, password) {
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -20,11 +19,12 @@ function login(username, password) {
         .then(res => {
             localStorage.setItem('token', res.token);
             return true;
-        },error => {
-            this.error = error;
-            this.loading = false;
-        }
-    );
+            }, error => {
+                this.error = error;
+                this.loading = false;
+                return false;
+            }
+        );
 }
 
 function getCurrent() {
@@ -34,11 +34,6 @@ function getCurrent() {
     };
     return fetch(`${config.apiUrl}/chat/current`, requestOptions).then(handleResponse);
 }
-
-async function getCurrent2() {
-   return true;
-}
-
 
 function logout() {
     localStorage.removeItem('token');
