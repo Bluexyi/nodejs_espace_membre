@@ -68,7 +68,7 @@ export default {
     this.returnUrl = this.$route.query.returnUrl || "/";
   },
   methods: {
-    handleSubmit(e) {
+    async handleSubmit(e) {
       //Methode appelée après submit du formulaire
       this.submitted = true;
       const { username, password } = this;
@@ -78,15 +78,15 @@ export default {
         return;
       }
 
-      userService.login(username, password).then(
-        (res) => {
-          router.push(this.returnUrl);
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        }
-      );
+      const validated = await userService.login(username, password);
+      console.log(validated);
+      if(!validated){
+        this.loading = false;
+        this.error = "Authentification failed";
+        console.log("Authentification failed");
+      }else{
+        router.push(this.returnUrl);
+      }
     },
   },
 };

@@ -7,7 +7,7 @@ export const userService = {
     logout
 };
 
-function login(username, password) {
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -19,11 +19,12 @@ function login(username, password) {
         .then(res => {
             localStorage.setItem('token', res.token);
             return true;
-        },error => {
-            this.error = error;
-            this.loading = false;
-        }
-    );
+            }, error => {
+                this.error = error;
+                this.loading = false;
+                return false;
+            }
+        );
 }
 
 function getCurrent() {
